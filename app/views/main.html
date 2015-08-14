@@ -1,9 +1,10 @@
 <div class="jumbotron" ng-controller="MainCtrl">
+  <!-- <h1>{{quote}}</h1> -->
   <h1>{{points}}</h1>
-  <img ng-src="{{moviePoster}}"/>
   <p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
   </p>
+  <img ng-src="{{moviePoster}}"/>
   <p><a class="btn btn-lg btn-success" ng-click="getMovie()">Get Movie<span class="glyphicon glyphicon-ok"></span></a> </p>
   <p>{{movie.title}}</p>
   <p><a class="btn btn-lg btn-success" ng-click="yes()">Yes<span class="glyphicon glyphicon-ok"></span></a><a class="btn btn-lg btn-success" ng-click="no()">No<span class="glyphicon glyphicon-ok"></span></a></p>
