@@ -12,19 +12,18 @@ angular.module('cagefightApp')
   	$scope.movie = {};
   	$scope.moviePoster = {};
   	$scope.points = 0;
+  	$scope.movieBackdrop = {};
 
   	$scope.getCageMovie = function () {
 	var URL = 'http://api.themoviedb.org/3/person/2963/movie_credits?api_key=a83e28dc44baf347eb09a87d44ee2885';
 	var id = $scope.randomInt(0, 85);
 		return $http.get(URL)
 			.success(function(response) {
-				console.log('getCageMovie function', response);
+				console.log(response);
 				$scope.movie.title = response.cast[id].title;
 				$scope.moviePoster = 'https://image.tmdb.org/t/p/w185' + response.cast[id].poster_path;
-				console.log('movie poster',$scope.moviePoster);
 			})
   	};
-  	// $scope.quote = {};
   	$scope.randomInt = function(min, max) {
   		return Math.floor(Math.random() * (max - min)) + min;
   	};
@@ -36,14 +35,17 @@ angular.module('cagefightApp')
 	  				return $scope.getMovie();
   			}
   		}
+  		alert('Wrong Answer. You arent caging hard enough');
+  		return $scope.getMovie();
   	};
   	$scope.noMovieInfo = function (obj) {
   		for(var i = 0; i < obj.cast.length; i++){
   			if(obj.cast[i].title === $scope.movie.title){
-  				alert('Wrong Answer. You arent caging hard enough')
+  				alert('Wrong Answer. You arent caging hard enough');
   				return $scope.getMovie();
   			}
   		}
+  		alert('Correct Answer');
   		$scope.points++;
   		return $scope.getMovie();
   	};
@@ -51,7 +53,6 @@ angular.module('cagefightApp')
   		var URL = 'http://api.themoviedb.org/3/person/2963/movie_credits?api_key=a83e28dc44baf347eb09a87d44ee2885';
 		return $http.get(URL)
 			.success(function(response) {
-					console.log('yes function', response)
 				return $scope.yesMovieInfo(response);
 			});
   	};
@@ -60,7 +61,6 @@ angular.module('cagefightApp')
 		console.log(' MovieService.js, Making request');
 		return $http.get(URL)
 			.success(function(response) {
-				console.log('no function', response.cast[0].title)
 				return $scope.noMovieInfo(response);
 			})
   	};
@@ -73,14 +73,14 @@ angular.module('cagefightApp')
   			.success(function(response){
 		// console.log("Response:", response)
 				if((Number(response.release_date.split("").splice(0,4).join("")) > 1981) && (response.spoken_languages[0].name === 'English') && (response.adult === false)){
-					// console.log("response: ", response)
-					console.log("success")
 					$scope.movie = response;
 					$scope.moviePoster = response.poster_path;
+					$scope.movieBackdrop = 'https://image.tmdb.org/t/p/w780' + response.backdrop_path;
+					console.log('movieBackground', $scope.movieBackdrop);
 					console.log('$scope.movie', $scope.movie);
 					return response;
 				}
-				else if(id % 5 === 0 || id % 9 === 0){
+				else if(id % 29 === 0 || id % 9 === 0){
 					return $scope.getCageMovie();
 				}
 				else {
@@ -89,13 +89,12 @@ angular.module('cagefightApp')
 				}
 			})
 		    .error(function(e){
-				console.log("error")
 				return $scope.getMovie();
 			})
 		};
 	$scope.win = function () {
 		if($scope.points === 15) {
-			$scope.points = "Winner";
+			$scope.movie = "Winner";
 			return;
 		}
 	}
